@@ -2,31 +2,39 @@
 
 set -e
 
-if [ -z "$DB_HOST_NAME"]; then
-	export DB_HOST_NAME=$DB_PORT_3306_TCP_ADDR
-fi
+chown www-data:www-data -R /app
 
-if [ -z "$DB_TCP_PORT"]; then
-	export DB_TCP_PORT=$DB_PORT_3306_TCP_PORT
-fi
 
-if [ -z "$DB_USER_NAME"]; then
-	export DB_USER_NAME=$DB_ENV_MYSQL_USER
-fi
+cat > /app/suitecrm/config_override.php <<EOF
+<?php
 
-if [ -z "$DB_PASSWORD"]; then
-	export DB_PASSWORD=$DB_ENV_MYSQL_PASSWORD
-fi
+\$sugar_config['http_referer']['list'][] = '${VIRTUAL_HOST}';
+EOF
 
-if [ -z "$DATABASE_NAME"]; then
-	export DATABASE_NAME=$DB_ENV_MYSQL_DATABASE
-fi
+cat >> /usr/local/etc/php-fpm.conf <<EOF
+php_admin_value[upload_max_filesize] = 16M
+php_admin_value[date.timezone] = "UTC"
+EOF
 
-/usr/local/bin/envtemplate.py -i /usr/local/src/config_override.php.pyt -o /var/www/html/config_override.php
+cat > /root/cron.conf <<EOF
+*    *    *    *    *     cd ${SUITE_APP_DIR}; php -f cron.php > /dev/null 2>&1 
+EOF
+
+crontab /root/cron.conf;
 /usr/sbin/cron
 
-# Remove Apache PID lock file so apache can start next time
-rm -f /run/apache2/apache2.pid
+cat > /etc/supervisor/conf.d/php5-fpm.conf <<EOF
+[program:php5-fpm]
+command = php-fpm
+user = root
+autostart = true
+EOF
 
-# Start Apache
-apachectl -DFOREGROUND
+cat > /etc/supervisor/conf.d/nginx.conf <<EOF
+[program:nginx]
+command = nginx -g 'daemon off;'
+user = root
+autostart = true
+EOF
+
+exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf

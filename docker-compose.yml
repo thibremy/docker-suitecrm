@@ -3,10 +3,9 @@ suitecrm:
   ports:
     - "8080:80"
   links:
-    - "db"
+    - db:mysql
   environment:
-    DB_TYPE: mysql
-    DB_MANAGER: MysqlManager
+    VIRTUAL_HOST: suitecrm.dev
 
 dbdata:
   image: alpine
@@ -19,7 +18,7 @@ db:
   volumes_from:
     - dbdata
   environment:
-    MYSQL_ROOT_PASSWORD: EvXTC3R7Sef5aB725hKv
+    MYSQL_ROOT_PASSWORD: CjTk6WN5qCgE
     MYSQL_DATABASE: suitecrm
     MYSQL_USER: suitecrm
-    MYSQL_PASSWORD: B3fyAKRyFpaMR5vyPMJz
+    MYSQL_PASSWORD: 08iBy3UYsnXZ
