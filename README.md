@@ -15,7 +15,7 @@ Password: 08iBy3UYsnXZ || CjTk6WN5qCgE
 
 Feel free to change that on docker-compose.yml
 
-### In developpment
+### In development
 
 if you run docker on boot2docker change VIRTUAL_HOST: suitecrm.dev with your boot2docker IP.  
 You can have your ip with:
