@@ -7,10 +7,15 @@
 ``
 ### Installation step
 
-Name of webserver: mysql
-Username & password of database administrator: suitecrm 08iBy3UYsnXZ
+Database information:
+
+Hostname: mysql  
+Username: suitecrm  
+Password: 08iBy3UYsnXZ or CjTk6WN5qCgE
+
+Feel free to change that on docker-compose.yml
 
 ### In production 
 
-Create dockerfile.production and change MYSQL_ROOT_PASSWORD & MYSQL_PASSWORD.
+Create docker-compose.production.yml and change MYSQL_ROOT_PASSWORD & MYSQL_PASSWORD.
 
