@@ -10,7 +10,7 @@
 Database information:
 
 Hostname: mysql  
-Username: suitecrm  || root
+Username: suitecrm  || root  
 Password: 08iBy3UYsnXZ || CjTk6WN5qCgE
 
 Feel free to change that on docker-compose.yml
